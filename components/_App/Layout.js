@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Header from "./Header";
-import HeadContent from "./HeadContent";
 
 function Container({ children }) {
   return (
@@ -12,7 +11,10 @@ function Layout({ children }) {
   return (
     <>
       <Head>
-        <HeadContent />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="utf-8" />
+        <link rel="stylesheet" type="text/css" href="/static/styles.css" />
+        <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
         <title>ReactReserve</title>
       </Head>
       <Header />

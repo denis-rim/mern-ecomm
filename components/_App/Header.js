@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
+import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 import {
@@ -9,6 +10,7 @@ import {
   UserIcon,
   ShoppingBagIcon,
 } from "@heroicons/react/outline";
+import NProgress from "nprogress";
 
 const headerButtons = [
   {
@@ -28,13 +30,41 @@ const headerButtons = [
   },
 ];
 
+// Route change animation
+// Router.onRouteChangeStart = () => NProgress.start();
+// Router.onRouteChangeComplete = () => NProgress.done();
+// Router.onRouteChangeError = () => NProgress.done();
+
 function Header() {
-  const user = false;
-  const admin = false;
+  const router = useRouter();
+  const user = true;
+  const admin = true;
+
+  // Handle loading progress bar
+  useEffect(() => {
+    const handleRoteChangeStart = () => NProgress.start();
+    const handleRoteChangeStop = () => NProgress.done();
+
+    router.events.on("routeChangeStart", handleRoteChangeStart);
+    router.events.on("routeChangeComplete", handleRoteChangeStop);
+    router.events.on("routeChangeError", handleRoteChangeStop);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off("routeChangeStart", handleRoteChangeStart);
+      router.events.off("routeChangeComplete", handleRoteChangeStop);
+      router.events.off("routeChangeError", handleRoteChangeStop);
+    };
+  }, []);
+
+  function isActive(route) {
+    return route === router.pathname;
+  }
 
   return (
     <Popover className="relative bg-indigo-500">
-      <div className="flex justify-between items-center px-4 py-6 sm:px-6 md:justify-start md:space-x-10">
+      <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
         <div className="flex justify-start lg:w-0 lg:flex-1">
           <Link href="/">
             <a className="h-8 w-auto sm:h-10">
@@ -57,7 +87,11 @@ function Header() {
               <>
                 {admin && (
                   <Link href="/create">
-                    <a className="-m-1 p-1 flex items-start rounded-md bg-indigo-500 text-white hover:bg-indigo-400">
+                    <a
+                      className={`-m-1 p-1 pr-2 flex items-start rounded-md ${
+                        isActive("/create") ? "bg-indigo-400" : "bg-indigo-500"
+                      }  text-white hover:bg-indigo-400`}
+                    >
                       <div className="flex items-center justify-center ">
                         <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
                           <PlusIcon className="h-6 w-6" aria-hidden="true" />
@@ -69,37 +103,28 @@ function Header() {
                     </a>
                   </Link>
                 )}
-                <Link href="/account">
-                  <a className="-m-1 p-1 flex items-start rounded-md bg-indigo-500 text-white hover:bg-indigo-400">
-                    <div className="flex items-center justify-center ">
-                      <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
-                        <UserIcon className="h-6 w-6" aria-hidden="true" />
-                      </div>
-                      <div className="ml-2">
-                        <p className="text-base font-medium">Account</p>
-                      </div>
-                    </div>
-                  </a>
-                </Link>
               </>
             ) : null}
-
-            <Link href="/cart">
-              <a className="-m-1 p-1 flex items-start rounded-md bg-indigo-500 text-white hover:bg-indigo-400">
-                <div className="flex items-center justify-center ">
-                  <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
-                    <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
-                  </div>
-                  <div className="ml-2">
-                    <p className="text-base font-medium">Cart</p>
-                  </div>
-                </div>
-              </a>
-            </Link>
           </div>
         </div>
 
         <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+          <Link href="/cart">
+            <a
+              className={`p-1 pr-2 ml-4 flex items-start rounded-md ${
+                isActive("/cart") ? "bg-indigo-400" : "bg-indigo-500"
+              }  text-white hover:bg-indigo-400`}
+            >
+              <div className="flex items-center justify-center ">
+                <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
+                  <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
+                </div>
+                <div className="ml-2">
+                  <p className="text-base font-medium">Cart</p>
+                </div>
+              </div>
+            </a>
+          </Link>
           {!user ? (
             <>
               <Link href="/">
@@ -114,11 +139,29 @@ function Header() {
               </Link>
             </>
           ) : (
-            <Link href="/">
-              <a className="ml-4 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                Log out
-              </a>
-            </Link>
+            <>
+              <Link href="/account">
+                <a
+                  className={`p-1 pr-2 ml-4 flex items-start rounded-md ${
+                    isActive("/account") ? "bg-indigo-400" : "bg-indigo-500"
+                  }  text-white hover:bg-indigo-400`}
+                >
+                  <div className="flex items-center justify-center ">
+                    <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
+                      <UserIcon className="h-6 w-6" aria-hidden="true" />
+                    </div>
+                    <div className="ml-2">
+                      <p className="text-base font-medium">Account</p>
+                    </div>
+                  </div>
+                </a>
+              </Link>
+              <Link href="/">
+                <a className="ml-4 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                  Log out
+                </a>
+              </Link>
+            </>
           )}
         </div>
       </div>
