@@ -1,3 +1,13 @@
-export default function Home() {
-  return <>Home</>
+import axios from "axios";
+
+export default function Home({ products }) {
+  return <>Home</>;
 }
+
+Home.getInitialProps = async () => {
+  // Fetch data on the server
+  const url = "http://localhost:3000/api/products";
+  const response = await axios.get(url);
+  // Return response data as object
+  return { products: response.data };
+};
