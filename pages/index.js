@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default function Home({ products }) {
+  console.log(products);
   return <>Home</>;
 }
 
