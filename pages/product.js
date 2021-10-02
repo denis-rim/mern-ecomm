@@ -1,8 +1,8 @@
 import axios from "axios";
+import ProductPageComponent from "../components/Product/ProductPageComponent";
 
 function Product({ product }) {
-  console.log(product);
-  return <>Product</>;
+  return <ProductPageComponent {...product} />;
 }
 
 Product.getInitialProps = async ({ query: { id } }) => {

@@ -1,7 +1,4 @@
 import Product from "../../models/Product";
-import connectDb from "../../utils/connectDB";
-
-connectDb();
 
 export default async (req, res) => {
   const { id } = req.query;
