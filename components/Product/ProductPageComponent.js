@@ -1,8 +1,29 @@
 import { CheckIcon } from "@heroicons/react/solid";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import baseUrl from "../../utils/baseUrl";
+import DeleteProductModal from "../DeleteProductModal";
 
-function ProductPageComponent({ name, price, description, mediaUrl }) {
+function ProductPageComponent({ id, name, price, description, mediaUrl }) {
+  const [modal, setModal] = useState(false);
+  const router = useRouter();
+
+  const handleDeleteProduct = async () => {
+    const url = `${baseUrl}/api/product`;
+    const payload = { params: { id } };
+    console.log(url, payload);
+    await axios.delete(url, payload);
+    await router.push("/");
+  };
+
   return (
     <div className="bg-white">
+      <DeleteProductModal
+        open={modal}
+        setModal={setModal}
+        handleDeleteProduct={handleDeleteProduct}
+      />
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
         {/* Product details */}
         <div className="lg:max-w-lg lg:self-end">
@@ -27,7 +48,7 @@ function ProductPageComponent({ name, price, description, mediaUrl }) {
                 <select
                   id="quantity"
                   name="quantity"
-                  className="rounded-md p-1 border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="rounded-md p-1.5 w-14 border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value={1}>1</option>
                   <option value={2}>2</option>
@@ -69,7 +90,7 @@ function ProductPageComponent({ name, price, description, mediaUrl }) {
         </div>
 
         {/* Product form */}
-        <div className="mt-10 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
+        <div className="mt-2 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
           <section aria-labelledby="options-heading">
             <form>
               <div className="mt-10">
@@ -83,7 +104,8 @@ function ProductPageComponent({ name, price, description, mediaUrl }) {
               <div className="mt-6 text-center">
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  onClick={() => setModal(true)}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Delete
                 </button>
