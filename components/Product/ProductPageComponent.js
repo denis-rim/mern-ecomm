@@ -1,18 +1,17 @@
-import { CheckIcon } from "@heroicons/react/solid";
-import axios from "axios";
-import { useRouter } from "next/router";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { CheckIcon } from "@heroicons/react/solid";
 import baseUrl from "../../utils/baseUrl";
 import DeleteProductModal from "../DeleteProductModal";
 
-function ProductPageComponent({ id, name, price, description, mediaUrl }) {
+function ProductPageComponent({ id, name, price, description, sku, mediaUrl }) {
   const [modal, setModal] = useState(false);
   const router = useRouter();
 
   const handleDeleteProduct = async () => {
     const url = `${baseUrl}/api/product`;
     const payload = { params: { id } };
-    console.log(url, payload);
     await axios.delete(url, payload);
     await router.push("/");
   };
@@ -60,6 +59,10 @@ function ProductPageComponent({ id, name, price, description, mediaUrl }) {
                   <option value={8}>8</option>
                 </select>
               </div>
+
+              <span className="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800">
+                SKU {sku}
+              </span>
             </div>
 
             <div className="mt-4 space-y-6">

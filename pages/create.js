@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
 import NotificationModal from "../components/shared/NotificationModal";
+import baseUrl from "../utils/baseUrl";
 
 const INITIAL_PRODUCT = {
   name: "",
@@ -8,14 +10,16 @@ const INITIAL_PRODUCT = {
   description: "",
 };
 
+// TODO: Add loading spinner
+
 function Create() {
   const [product, setProduct] = useState(INITIAL_PRODUCT);
   const [mediaPreview, setMediaPreview] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function handleChange(event) {
     const { name, value, files } = event.target;
-
     if (name === "media") {
       setProduct((prevState) => ({ ...prevState, media: files[0] }));
       setMediaPreview(window.URL.createObjectURL(files[0]));
@@ -24,13 +28,30 @@ function Create() {
     }
   }
 
-  function handleSubmit(event) {
+  async function handleImageUpload() {
+    const data = new FormData();
+    data.append("file", product.media);
+    data.append("upload_preset", "react-mern");
+
+    const response = await axios.post(process.env.CLOUDINARY_URL, data);
+    return response.data.url;
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(product);
+    setLoading(true);
+
+    const mediaUrl = await handleImageUpload();
+    const url = `${baseUrl}/api/product`;
+    const { name, price, description } = product;
+    const payload = { name, price, description, mediaUrl };
+
+    const response = await axios.post(url, payload);
+    console.log(response);
+    setLoading(false);
+
     setProduct(INITIAL_PRODUCT);
-
     setShowModal(true);
-
     setTimeout(() => {
       setShowModal(false);
     }, 4000);
@@ -201,6 +222,7 @@ function Create() {
           </button>
           <button
             type="submit"
+            disabled={loading}
             className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Save
