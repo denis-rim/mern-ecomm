@@ -1,8 +1,8 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/outline";
 
-function NotificationModal({ showModal }) {
+export function NotificationModal({ showModal, text }) {
   return (
     <>
       {/* Global notification live region, render this permanently at the end of the document */}
@@ -49,4 +49,24 @@ function NotificationModal({ showModal }) {
   );
 }
 
-export default NotificationModal;
+import { XCircleIcon } from "@heroicons/react/solid";
+
+export function ErrorNotification({ text }) {
+  return (
+    <div className="rounded-md bg-red-50 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-red-800">
+            There were errors with your submission
+          </h3>
+          <div className="mt-2 text-sm text-red-700">
+            <p>{text}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -20,29 +20,45 @@ export default async (req, res) => {
   }
 
   async function handleGetRequest(req, res) {
-    const { id } = req.query;
-    const product = await Product.findOne({ _id: id });
-    res.status(200).json(product);
+    try {
+      const { id } = req.query;
+      const product = await Product.findOne({ _id: id });
+      res.status(200).json(product);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error fetching product");
+    }
   }
 };
 
 async function handlePostRequest(req, res) {
   const { name, price, description, mediaUrl } = req.body;
-  if (!name || !price || !description || !mediaUrl) {
-    return res.status(422).send("Product missing one or more fields");
-  }
-  const product = await new Product({
-    name,
-    price,
-    description,
-    mediaUrl,
-  }).save();
 
-  res.status(201).json(product);
+  try {
+    if (!name || !price || !description || !mediaUrl) {
+      return res.status(422).send("Product missing one or more fields");
+    }
+    const product = await new Product({
+      name,
+      price,
+      description,
+      mediaUrl,
+    }).save();
+
+    res.status(201).json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error in creating product");
+  }
 }
 
 async function handleDeleteRequest(req, res) {
   const { id } = req.query;
-  await Product.findOneAndDelete({ _id: id });
-  res.status(204).json({});
+  try {
+    await Product.findOneAndDelete({ _id: id });
+    res.status(204).json({});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Failed to delete product");
+  }
 }
