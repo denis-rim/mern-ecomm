@@ -30,11 +30,6 @@ const headerButtons = [
   },
 ];
 
-// Route change animation
-// Router.onRouteChangeStart = () => NProgress.start();
-// Router.onRouteChangeComplete = () => NProgress.done();
-// Router.onRouteChangeError = () => NProgress.done();
-
 function Header() {
   const router = useRouter();
   const user = true;
