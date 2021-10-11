@@ -11,6 +11,7 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import NProgress from "nprogress";
+import Button from "../shared/Button";
 
 const headerButtons = [
   {
@@ -32,7 +33,7 @@ const headerButtons = [
 
 function Header() {
   const router = useRouter();
-  const user = true;
+  const user = false;
   const admin = true;
 
   // Handle loading progress bar
@@ -122,16 +123,21 @@ function Header() {
           </Link>
           {!user ? (
             <>
-              <Link href="/">
-                <a className="text-gray-500 ml-4 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gray-100 hover:bg-gray-300">
-                  Sign in
-                </a>
-              </Link>
-              <Link href="/">
-                <a className="ml-4 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                  Sign up
-                </a>
-              </Link>
+              <Button
+                appearance="secondary"
+                href="/login"
+                isActive={isActive("/signin")}
+                className="ml-4 "
+              >
+                Log in
+              </Button>
+              <Button
+                href="/signup"
+                isActive={isActive("/signup")}
+                className="ml-4 "
+              >
+                Sign up
+              </Button>
             </>
           ) : (
             <>
