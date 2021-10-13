@@ -31,10 +31,9 @@ const headerButtons = [
   },
 ];
 
-function Header() {
+function Header({ user }) {
   const router = useRouter();
-  const user = false;
-  const admin = true;
+  const admin = false;
 
   // Handle loading progress bar
   useEffect(() => {

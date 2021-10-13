@@ -5,13 +5,20 @@ import { CheckIcon } from "@heroicons/react/solid";
 import baseUrl from "../../utils/baseUrl";
 import DeleteProductModal from "../DeleteProductModal";
 
-function ProductPageComponent({ id, name, price, description, sku, mediaUrl }) {
+function ProductPageComponent({
+  _id,
+  name,
+  price,
+  description,
+  sku,
+  mediaUrl,
+}) {
   const [modal, setModal] = useState(false);
   const router = useRouter();
 
   const handleDeleteProduct = async () => {
     const url = `${baseUrl}/api/product`;
-    const payload = { params: { id } };
+    const payload = { params: { _id } };
     await axios.delete(url, payload);
     await router.push("/");
   };

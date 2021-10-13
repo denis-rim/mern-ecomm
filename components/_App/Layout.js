@@ -7,7 +7,7 @@ function Container({ children }) {
   );
 }
 
-function Layout({ children }) {
+function Layout({ children, user }) {
   return (
     <>
       <Head>
@@ -17,7 +17,7 @@ function Layout({ children }) {
         <link rel="stylesheet" type="text/css" href="/static/nprogress.css" />
         <title>ReactReserve</title>
       </Head>
-      <Header />
+      <Header user={user} />
       <Container>{children}</Container>
     </>
   );

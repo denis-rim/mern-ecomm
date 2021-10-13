@@ -53,9 +53,9 @@ async function handlePostRequest(req, res) {
 }
 
 async function handleDeleteRequest(req, res) {
-  const { id } = req.query;
+  const { _id } = req.query;
   try {
-    await Product.findOneAndDelete({ _id: id });
+    await Product.findOneAndDelete({ _id });
     res.status(204).json({});
   } catch (error) {
     console.error(error);
