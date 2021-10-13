@@ -1,7 +1,10 @@
+import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "../components/shared/Button";
 import { ErrorNotification } from "../components/shared/NotificationModal";
+import { handleLogin } from "../utils/auth";
+import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 
 const INITIAL_USER = {
@@ -28,10 +31,11 @@ function Login() {
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      // set loading state
       setLoading(true);
-      setError("Wrong username");
-      console.log(user);
+
+      const response = await axios.post(`${baseUrl}/api/login`, { ...user });
+
+      handleLogin(response.data);
     } catch (error) {
       catchErrors(error, setError);
     } finally {

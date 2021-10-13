@@ -37,7 +37,7 @@ export default async (req, res) => {
       expiresIn: "30d",
     });
 
-    return res.status(201).json(token);
+    res.status(201).json(token);
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error signup user. Please try again later.");
