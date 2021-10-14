@@ -2,8 +2,8 @@ import axios from "axios";
 import ProductPageComponent from "../components/Product/ProductPageComponent";
 import baseUrl from "../utils/baseUrl";
 
-function Product({ product }) {
-  return <ProductPageComponent {...product} />;
+function Product({ product, user }) {
+  return <ProductPageComponent user={user} {...product} />;
 }
 
 Product.getInitialProps = async ({ query: { id } }) => {

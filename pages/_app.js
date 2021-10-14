@@ -26,10 +26,22 @@ class MyApp extends App {
         const response = await axios.get(`${baseUrl}/api/account`, {
           headers: { Authorization: token },
         });
+
         const user = response.data;
+        const isRoot = user.role === "root";
+        const isAdmin = user.role === "admin";
+
+        const isNotPermitted =
+          !(isRoot || isAdmin) && ctx.pathname === "/create";
+
+        if (isNotPermitted) {
+          redirectUser(ctx, "/");
+        }
+
         pageProps.user = user;
       } catch (error) {
         console.error("Error getting current user", error);
+
         destroyCookie(ctx, "token");
         redirectUser(ctx, "/login");
       }

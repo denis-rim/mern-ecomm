@@ -12,9 +12,14 @@ function ProductPageComponent({
   description,
   sku,
   mediaUrl,
+  user,
 }) {
   const [modal, setModal] = useState(false);
   const router = useRouter();
+  const isRoot = user?.role === "root";
+  const isAdmin = user?.role === "admin";
+
+  const isRootOrAdmin = isRoot || isAdmin;
 
   const handleDeleteProduct = async () => {
     const url = `${baseUrl}/api/product`;
@@ -111,15 +116,17 @@ function ProductPageComponent({
                   Add to bag
                 </button>
               </div>
-              <div className="mt-6 text-center">
-                <button
-                  type="button"
-                  onClick={() => setModal(true)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Delete
-                </button>
-              </div>
+              {isRootOrAdmin && (
+                <div className="mt-6 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setModal(true)}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </form>
           </section>
         </div>

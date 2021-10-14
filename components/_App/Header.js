@@ -11,6 +11,7 @@ import {
   ShoppingBagIcon,
 } from "@heroicons/react/outline";
 import NProgress from "nprogress";
+import { handleLogout } from "../../utils/auth";
 import Button from "../shared/Button";
 
 const headerButtons = [
@@ -33,7 +34,10 @@ const headerButtons = [
 
 function Header({ user }) {
   const router = useRouter();
-  const admin = false;
+  const isRoot = user?.role === "root";
+  const isAdmin = user?.role === "admin";
+
+  const isRootOrAdmin = isRoot || isAdmin;
 
   // Handle loading progress bar
   useEffect(() => {
@@ -80,7 +84,7 @@ function Header({ user }) {
           <div className="relative flex gap-6 px-5 py-6 sm:gap-8 sm:p-2">
             {user ? (
               <>
-                {admin && (
+                {isRootOrAdmin && (
                   <Link href="/create">
                     <a
                       className={`-m-1 p-1 pr-2 flex items-start rounded-md ${
@@ -125,7 +129,7 @@ function Header({ user }) {
               <Button
                 appearance="secondary"
                 href="/login"
-                isActive={isActive("/signin")}
+                isActive={isActive("/login")}
                 className="ml-4 "
               >
                 Log in
@@ -140,27 +144,17 @@ function Header({ user }) {
             </>
           ) : (
             <>
-              <Link href="/account">
-                <a
-                  className={`p-1 pr-2 ml-4 flex items-start rounded-md ${
-                    isActive("/account") ? "bg-indigo-400" : "bg-indigo-500"
-                  }  text-white hover:bg-indigo-400`}
-                >
-                  <div className="flex items-center justify-center ">
-                    <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
-                      <UserIcon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <div className="ml-2">
-                      <p className="text-base font-medium">Account</p>
-                    </div>
-                  </div>
-                </a>
-              </Link>
-              <Link href="/">
-                <a className="ml-4 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-                  Log out
-                </a>
-              </Link>
+              <Button
+                href="/account"
+                className="ml-4"
+                isActive={isActive("/account")}
+              >
+                Account
+              </Button>
+
+              <Button onClick={handleLogout} className="ml-4">
+                Log out
+              </Button>
             </>
           )}
         </div>
