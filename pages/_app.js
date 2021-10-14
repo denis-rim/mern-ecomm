@@ -1,10 +1,11 @@
 import axios from "axios";
 import App from "next/app";
-import "../styles/globals.css";
+import Router from "next/router";
 import { parseCookies, destroyCookie } from "nookies";
 import Layout from "../components/_App/Layout";
 import { redirectUser } from "../utils/auth";
 import baseUrl from "../utils/baseUrl";
+import "../styles/globals.css";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -49,6 +50,17 @@ class MyApp extends App {
 
     return { pageProps };
   }
+
+  // trick to perform logout in all opened browser windows. auth.js/handleLogout()
+  componentDidMount() {
+    window.addEventListener("storage", this.syncLogout);
+  }
+
+  syncLogout = (event) => {
+    if (event.key === "logout") {
+      Router.push("/login");
+    }
+  };
 
   render() {
     const { Component, pageProps } = this.props;
