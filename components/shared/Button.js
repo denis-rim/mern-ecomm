@@ -8,6 +8,8 @@ function Button({
   className,
   disabled,
   isActive,
+  // TODO: Add loading spinner
+  loading = false,
   ...props
 }) {
   const styles = {
@@ -19,6 +21,7 @@ function Button({
     secondary: `${
       isActive ? "bg-white" : "bg-gray-200"
     } border-gray-300 text-gray-700 hover:bg-gray-100`,
+    danger: "text-gray-100 bg-red-600 hover:bg-red-700",
     disabledPrimary: "text-white bg-indigo-200 cursor-not-allowed",
   };
 
@@ -57,6 +60,7 @@ function Button({
       className={cn(styles.button, className, {
         [styles.primary]: appearance === "primary",
         [styles.secondary]: appearance === "secondary",
+        [styles.danger]: appearance === "danger",
       })}
       {...props}
     >

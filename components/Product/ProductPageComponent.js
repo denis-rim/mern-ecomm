@@ -1,9 +1,12 @@
-import { useState } from "react";
+import cookie from "js-cookie";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { CheckIcon } from "@heroicons/react/solid";
+import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import baseUrl from "../../utils/baseUrl";
+import catchErrors from "../../utils/catchErrors";
 import DeleteProductModal from "../DeleteProductModal";
+import Button from "../shared/Button";
 
 function ProductPageComponent({
   _id,
@@ -15,18 +18,56 @@ function ProductPageComponent({
   user,
 }) {
   const [modal, setModal] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
+  // hardcoded quantity
+  const inStockQuantity = 5;
+  const availableQuantity = Array.from(Array(inStockQuantity + 1).keys()).slice(
+    1
+  );
   const isRoot = user?.role === "root";
   const isAdmin = user?.role === "admin";
-
   const isRootOrAdmin = isRoot || isAdmin;
 
-  const handleDeleteProduct = async () => {
-    const url = `${baseUrl}/api/product`;
-    const payload = { params: { _id } };
-    await axios.delete(url, payload);
-    await router.push("/");
-  };
+  useEffect(() => {
+    let timeout;
+    if (success) {
+      timeout = setInterval(() => setSuccess(false), 3000);
+    }
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [success]);
+
+  async function handleDeleteProduct() {
+    try {
+      const url = `${baseUrl}/api/product`;
+      const payload = { params: { _id } };
+      await axios.delete(url, payload);
+      await router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleAddProductToCart() {
+    try {
+      setLoading(true);
+      const token = cookie.get("token");
+      await axios.put(
+        `${baseUrl}/api/cart`,
+        { quantity, _id },
+        { headers: { Authorization: token } }
+      );
+      setSuccess(true);
+    } catch (error) {
+      catchErrors(error, window.alert("Failed to add product."));
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -60,17 +101,18 @@ function ProductPageComponent({
                   id="quantity"
                   name="quantity"
                   className="rounded-md p-1.5 w-14 border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  value={quantity}
+                  onChange={(event) => setQuantity(Number(event.target.value))}
                 >
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
+                  {availableQuantity.map((el) => (
+                    <option key={el} value={el}>
+                      {el}
+                    </option>
+                  ))}
                 </select>
               </div>
+
+              {/*<AddProductToCart />*/}
 
               <span className="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800">
                 SKU {sku}
@@ -104,30 +146,33 @@ function ProductPageComponent({
           </div>
         </div>
 
-        {/* Product form */}
         <div className="mt-2 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
           <section aria-labelledby="options-heading">
-            <form>
+            <div>
               <div className="mt-10">
-                <button
-                  type="submit"
-                  className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                >
-                  Add to bag
-                </button>
+                {user ? (
+                  <Button
+                    className="w-full"
+                    disabled={success || loading}
+                    loading={loading}
+                    onClick={handleAddProductToCart}
+                  >
+                    {user && success ? "Item Added" : "Add to Cart"}
+                  </Button>
+                ) : (
+                  <Button href="/login" className="w-full">
+                    Log In To Purchase
+                  </Button>
+                )}
               </div>
               {isRootOrAdmin && (
                 <div className="mt-6 text-center">
-                  <button
-                    type="button"
-                    onClick={() => setModal(true)}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
+                  <Button appearance="danger" onClick={() => setModal(true)}>
                     Delete
-                  </button>
+                  </Button>
                 </div>
               )}
-            </form>
+            </div>
           </section>
         </div>
       </div>

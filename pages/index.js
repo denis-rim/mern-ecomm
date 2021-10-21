@@ -1,9 +1,17 @@
 import axios from "axios";
+import Incentives from "../components/Index/Incentives";
 import ProductList from "../components/Index/ProductList";
+import Trending from "../components/Index/Trending";
 import baseUrl from "../utils/baseUrl";
 
 export default function Home({ products }) {
-  return <ProductList products={products} />;
+  return (
+    <>
+      <Trending products={products} />
+      <ProductList products={products} />
+      <Incentives />
+    </>
+  );
 }
 
 Home.getInitialProps = async () => {
