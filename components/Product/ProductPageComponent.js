@@ -22,7 +22,7 @@ function ProductPageComponent({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
-  // hardcoded quantity
+  //TODO: add to product model quantity instead of hardcoded value
   const inStockQuantity = 5;
   const availableQuantity = Array.from(Array(inStockQuantity + 1).keys()).slice(
     1
@@ -48,7 +48,7 @@ function ProductPageComponent({
       await axios.delete(url, payload);
       await router.push("/");
     } catch (error) {
-      console.error(error);
+      catchErrors(error, window.alert("Failed to вудуеу product."));
     }
   }
 
@@ -63,6 +63,7 @@ function ProductPageComponent({
       );
       setSuccess(true);
     } catch (error) {
+      // TODO: replace alert to notification
       catchErrors(error, window.alert("Failed to add product."));
     } finally {
       setLoading(false);

@@ -1,6 +1,20 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import calculateCartTotal from "../../utils/calculateCartTotal";
+import Button from "../shared/Button";
 
-function CartSummary() {
+function CartSummary({ products }) {
+  const [isCartEmpty, setCartEmpty] = useState(false);
+  const [cartAmount, setCartAmount] = useState(0);
+  const [stripeAmount, setStripeAmount] = useState(0);
+
+  useEffect(() => {
+    const { cartTotal, stripeTotal } = calculateCartTotal(products);
+    setCartAmount(cartTotal);
+    setStripeAmount(stripeTotal);
+    setCartEmpty(products?.length === 0);
+  }, [products]);
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-0">
@@ -17,7 +31,7 @@ function CartSummary() {
                     Subtotal
                   </dt>
                   <dd className="ml-4 text-base font-medium text-gray-900">
-                    €00.00
+                    {cartAmount} €
                   </dd>
                 </div>
               </dl>
@@ -27,12 +41,13 @@ function CartSummary() {
             </div>
 
             <div className="mt-10">
-              <button
-                type="submit"
-                className="w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+              <Button
+                className="w-full"
+                href="/checkout"
+                disabled={isCartEmpty}
               >
                 Checkout
-              </button>
+              </Button>
             </div>
 
             <div className="mt-6 text-sm text-center">
