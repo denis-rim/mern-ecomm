@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Button from "../shared/Button";
 
-function CartItemList({ user, products }) {
+function CartItemList({ user, products, handleRemoveFromCart }) {
   if (products.length === 0) {
     return (
       <>
@@ -102,7 +102,7 @@ function CartItemList({ user, products }) {
                 {/*</p>*/}
                 <div className="ml-4">
                   <button
-                    type="button"
+                    onClick={() => handleRemoveFromCart(p.product._id)}
                     className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     <span>Remove</span>
