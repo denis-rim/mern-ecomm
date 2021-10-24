@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Button from "../shared/Button";
 
-function CartItemList({ user, products, handleRemoveFromCart }) {
+function CartItemList({ user, products, handleRemoveFromCart, success }) {
+  // TODO: Make something more useful
+  if (success) {
+    return <div>Your order nd payment has been accepted</div>;
+  }
+
   if (products.length === 0) {
     return (
       <>

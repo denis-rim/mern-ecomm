@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import StripeCheckout from "react-stripe-checkout";
 import calculateCartTotal from "../../utils/calculateCartTotal";
 import Button from "../shared/Button";
 
-function CartSummary({ products }) {
+function CartSummary({ products, handleCheckOut, success }) {
   const [isCartEmpty, setCartEmpty] = useState(false);
   const [cartAmount, setCartAmount] = useState(0);
   const [stripeAmount, setStripeAmount] = useState(0);
@@ -41,13 +42,22 @@ function CartSummary({ products }) {
             </div>
 
             <div className="mt-10">
-              <Button
-                className="w-full"
-                href="/checkout"
-                disabled={isCartEmpty}
+              <StripeCheckout
+                name="React Shop"
+                amount={stripeAmount}
+                image={products.length > 0 ? products[0].product.mediaUrl : ""}
+                currency="EUR"
+                shippingAddress={true}
+                billingAddress={true}
+                zipCode={true}
+                token={handleCheckOut}
+                triggerEvent="onClick"
+                stripeKey="pk_test_51JnziHDoe671UZTh4HJoYqLWk46ZDAq654pjmh9wippOdxwhaZJDWmcpOL7sbThVlPjtT1m3t1Q7NIa4IhI5cOYJ00SZjiiZws"
               >
-                Checkout
-              </Button>
+                <Button className="w-full" disabled={isCartEmpty || success}>
+                  Checkout
+                </Button>
+              </StripeCheckout>
             </div>
 
             <div className="mt-6 text-sm text-center">

@@ -5,9 +5,12 @@ import { useState } from "react";
 import CartItemList from "../components/Cart/CartItemList";
 import CartSummary from "../components/Cart/CartSummary";
 import baseUrl from "../utils/baseUrl";
+import catchErrors from "../utils/catchErrors";
 
 function Cart({ products, user }) {
   const [cartProducts, setCartProducts] = useState(products);
+  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleRemoveFromCart(productId) {
     const token = cookie.get("token");
@@ -16,6 +19,23 @@ function Cart({ products, user }) {
       headers: { Authorization: token },
     });
     setCartProducts(response.data);
+  }
+
+  async function handleCheckOut(paymentData) {
+    try {
+      setLoading(true);
+      const token = cookie.get("token");
+      const response = axios.post(
+        `${baseUrl}/api/checkout`,
+        { paymentData },
+        { headers: { Authorization: token } }
+      );
+      setSuccess(true);
+    } catch (error) {
+      catchErrors(error, window.alert("Failed to pay"));
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -27,8 +47,13 @@ function Cart({ products, user }) {
         handleRemoveFromCart={handleRemoveFromCart}
         user={user}
         products={cartProducts}
+        success={success}
       />
-      <CartSummary products={cartProducts} />
+      <CartSummary
+        products={cartProducts}
+        handleCheckOut={handleCheckOut}
+        success={success}
+      />
     </div>
   );
 }
