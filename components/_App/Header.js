@@ -62,7 +62,7 @@ function Header({ user }) {
   }
 
   return (
-    <div className="sticky top-0">
+    <div className="sticky top-0 z-50">
       <Popover className="relative bg-indigo-500">
         <div className="flex justify-between items-center px-4 py-2 sm:px-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
