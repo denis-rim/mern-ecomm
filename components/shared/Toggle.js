@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 
 function classNames(...classes) {

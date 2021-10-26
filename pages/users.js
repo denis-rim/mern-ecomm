@@ -5,6 +5,7 @@ import AccountLayout from "../components/Account/AccountLayout";
 import AccountHeader from "../components/shared/AccountHeader";
 import Toggle from "../components/shared/Toggle";
 import baseUrl from "../utils/baseUrl";
+import formatDate from "../utils/formatDate";
 
 function Users({ user }) {
   const [users, setUsers] = useState([]);
@@ -117,7 +118,7 @@ function UserTableRow({ user, userIdx }) {
         {user.name}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        {user.createdAt}
+        {formatDate(user.createdAt)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {user.email}

@@ -1,13 +1,12 @@
 import axios from "axios";
-import Link from "next/link";
 import { parseCookies } from "nookies";
 import AccountLayout from "../components/Account/AccountLayout";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import Button from "../components/shared/Button";
 import baseUrl from "../utils/baseUrl";
+import formatDate from "../utils/formatDate";
 
 function Orders({ user, orders }) {
-  console.log(user);
   return (
     <AccountLayout user={user}>
       <main>
@@ -44,7 +43,9 @@ function Orders({ user, orders }) {
                   >
                     <h3 className="sr-only">
                       Order placed on{" "}
-                      <time dateTime={order.createdAt}>{order.createdAt}</time>
+                      <time dateTime={formatDate(order.createdAt)}>
+                        {formatDate(order.createdAt)}
+                      </time>
                     </h3>
 
                     <div className="flex items-center justify-between p-4 border-b border-gray-200 sm:p-6">
@@ -60,8 +61,8 @@ function Orders({ user, orders }) {
                             Date placed
                           </dt>
                           <dd className="mt-1 text-gray-500">
-                            <time dateTime={order.createdAt}>
-                              {order.createdAt}
+                            <time dateTime={formatDate(order.createdAt)}>
+                              {formatDate(order.createdAt)}
                             </time>
                           </dd>
                         </div>
@@ -110,8 +111,8 @@ function Orders({ user, orders }) {
                               />
                               <p className="ml-2 text-sm font-medium text-gray-500">
                                 Delivered on{" "}
-                                <time dateTime={order.createdAt}>
-                                  {order.createdAt}
+                                <time dateTime={formatDate(order.createdAt)}>
+                                  {formatDate(order.createdAt)}
                                 </time>
                               </p>
                             </div>
