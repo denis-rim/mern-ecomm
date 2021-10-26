@@ -76,50 +76,50 @@ function AccountLayout({ user, children }) {
                   </Link>
 
                   {isRootOrAdmin && (
-                    <>
-                      <Link href="/create">
-                        <a
+                    <Link href="/create">
+                      <a
+                        className={classNames(
+                          isCurrentPage("/create")
+                            ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
+                            : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900",
+                          "group border-l-4 px-3 py-2 flex items-center text-sm font-medium"
+                        )}
+                      >
+                        <ViewGridAddIcon
                           className={classNames(
                             isCurrentPage("/create")
-                              ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
-                              : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900",
-                            "group border-l-4 px-3 py-2 flex items-center text-sm font-medium"
+                              ? "text-teal-500 group-hover:text-teal-500"
+                              : "text-gray-400 group-hover:text-gray-500",
+                            "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
                           )}
-                        >
-                          <ViewGridAddIcon
-                            className={classNames(
-                              isCurrentPage("/create")
-                                ? "text-teal-500 group-hover:text-teal-500"
-                                : "text-gray-400 group-hover:text-gray-500",
-                              "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
-                            )}
-                            aria-hidden="true"
-                          />
-                          <span className="truncate">Create</span>
-                        </a>
-                      </Link>
-                      <Link href="/users">
-                        <a
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">Create</span>
+                      </a>
+                    </Link>
+                  )}
+                  {user?.role === "root" && (
+                    <Link href="/users">
+                      <a
+                        className={classNames(
+                          isCurrentPage("/users")
+                            ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
+                            : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900",
+                          "group border-l-4 px-3 py-2 flex items-center text-sm font-medium"
+                        )}
+                      >
+                        <UserCircleIcon
                           className={classNames(
                             isCurrentPage("/users")
-                              ? "bg-teal-50 border-teal-500 text-teal-700 hover:bg-teal-50 hover:text-teal-700"
-                              : "border-transparent text-gray-900 hover:bg-gray-50 hover:text-gray-900",
-                            "group border-l-4 px-3 py-2 flex items-center text-sm font-medium"
+                              ? "text-teal-500 group-hover:text-teal-500"
+                              : "text-gray-400 group-hover:text-gray-500",
+                            "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
                           )}
-                        >
-                          <UserCircleIcon
-                            className={classNames(
-                              isCurrentPage("/users")
-                                ? "text-teal-500 group-hover:text-teal-500"
-                                : "text-gray-400 group-hover:text-gray-500",
-                              "flex-shrink-0 -ml-1 mr-3 h-6 w-6"
-                            )}
-                            aria-hidden="true"
-                          />
-                          <span className="truncate">Users</span>
-                        </a>
-                      </Link>
-                    </>
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">Users</span>
+                      </a>
+                    </Link>
                   )}
                 </nav>
               </aside>

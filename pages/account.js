@@ -1,7 +1,6 @@
 import AccountLayout from "../components/Account/AccountLayout";
 
 function Account({ user }) {
-  console.log(user);
   return (
     <AccountLayout user={user}>
       <form className="space-y-8 divide-y divide-gray-200">
