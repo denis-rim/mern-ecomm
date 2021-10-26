@@ -22,7 +22,7 @@ const headerButtons = [
   },
   {
     name: "Account",
-    href: "/account",
+    href: "/account/account",
     icon: UserIcon,
   },
   {
@@ -80,33 +80,6 @@ function Header({ user }) {
           </Popover.Button>
         </div>
 
-        <div className="hidden md:flex space-x-10">
-          <div className="relative flex gap-6 px-5 py-6 sm:gap-8 sm:p-2">
-            {user ? (
-              <>
-                {isRootOrAdmin && (
-                  <Link href="/create">
-                    <a
-                      className={`-m-1 p-1 pr-2 flex items-start rounded-md ${
-                        isActive("/create") ? "bg-indigo-400" : "bg-indigo-500"
-                      }  text-white hover:bg-indigo-400`}
-                    >
-                      <div className="flex items-center justify-center ">
-                        <div className="flex-shrink-0 flex items-center justify-center h-10 w-10  sm:h-8 sm:w-8">
-                          <PlusIcon className="h-6 w-6" aria-hidden="true" />
-                        </div>
-                        <div className="ml-2">
-                          <p className="text-base font-medium">Create</p>
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
-                )}
-              </>
-            ) : null}
-          </div>
-        </div>
-
         <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
           <Link href="/cart">
             <a
@@ -124,6 +97,7 @@ function Header({ user }) {
               </div>
             </a>
           </Link>
+
           {!user ? (
             <>
               <Button

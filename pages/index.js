@@ -1,7 +1,4 @@
 import axios from "axios";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
 import Incentives from "../components/Index/Incentives";
 import Pagination from "../components/Index/Pagination";
 import ProductList from "../components/Index/ProductList";

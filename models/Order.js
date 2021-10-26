@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const { ObjectId } = mongoose.Schema.Types;
+const { Number, ObjectId } = mongoose.Schema.Types;
 
 const OrderSchema = new mongoose.Schema(
   {
@@ -12,6 +12,7 @@ const OrderSchema = new mongoose.Schema(
       {
         quantity: {
           type: Number,
+          default: 1,
         },
         product: {
           type: ObjectId,

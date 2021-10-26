@@ -16,6 +16,7 @@ export default async (req, res) => {
     );
 
     const user = await User.findOne({ _id: userId });
+
     if (user) {
       res.status(200).json(user);
     } else {

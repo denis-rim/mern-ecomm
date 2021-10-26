@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-
 import ReactPaginate from "react-paginate";
 
 export default function Pagination({ totalPages }) {
@@ -20,6 +19,7 @@ export default function Pagination({ totalPages }) {
         nextLabel={"Next"}
         breakLabel={"..."}
         pageCount={totalPages}
+        initialPage={0}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={changePage}
