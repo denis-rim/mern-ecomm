@@ -1,6 +1,6 @@
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "reactnextshop-ar.now.sh"
+    ? "https://mern-ecomm-85zhuu9bz-denis-rim.vercel.app/"
     : "http://localhost:3000";
 
 export default baseUrl;
