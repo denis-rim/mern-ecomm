@@ -17,6 +17,7 @@ function Login() {
   const [error, setError] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
     const isUser = Object.values(user).every((el) => Boolean(el));
@@ -84,17 +85,46 @@ function Login() {
               >
                 Password
               </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  onChange={(event) => handleChange(event)}
-                  value={user.password}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+              {/*<div className="mt-1">*/}
+              {/*  <input*/}
+              {/*    id="password"*/}
+              {/*    name="password"*/}
+              {/*    type="password"*/}
+              {/*    autoComplete="current-password"*/}
+              {/*    required*/}
+              {/*    onChange={(event) => handleChange(event)}*/}
+              {/*    value={user.password}*/}
+              {/*    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"*/}
+              {/*  />*/}
+              {/*</div>*/}
+              {/*<button*/}
+              {/*  type="button"*/}
+              {/*  onClick={() => setHidden((prevState) => !prevState)}*/}
+              {/*  className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"*/}
+              {/*>*/}
+              {/*  <span>Show</span>*/}
+              {/*</button>*/}
+
+              <div className="mt-1 flex rounded-md shadow-sm">
+                <div className="relative flex items-stretch flex-grow focus-within:z-10">
+                  <input
+                    id="password"
+                    name="password"
+                    type={hidden ? "password" : "text"}
+                    autoComplete="current-password"
+                    required
+                    onChange={(event) => handleChange(event)}
+                    value={user.password}
+                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md  sm:text-sm border-gray-300"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setHidden((prevState) => !prevState)}
+                  className="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <span>Show</span>
+                </button>
               </div>
             </div>
 
