@@ -167,46 +167,44 @@ function Header({ user }) {
                 </div>
                 <div className="mt-6">
                   <nav className="grid grid-cols-1 gap-7">
-                    {headerButtons.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-m-3 p-3 flex items-center rounded-lg hover:bg-gray-50"
-                      >
+                    <Link href="/cart">
+                      <a className="-m-3 p-3 flex items-center rounded-lg hover:bg-gray-50">
                         <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-indigo-500 text-white">
-                          <item.icon className="h-6 w-6" aria-hidden="true" />
+                          <ShoppingCartIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
                         </div>
                         <div className="ml-4 text-base font-medium text-gray-900">
-                          {item.name}
+                          Cart
                         </div>
                       </a>
-                    ))}
+                    </Link>
+                    {!user ? (
+                      <div className="py-2 px-5">
+                        <Button href="/login" className="w-full">
+                          Log in
+                        </Button>
+                        <Button href="/signup" className="w-full mt-4">
+                          Sign up
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <Button
+                          href="/account"
+                          className="ml-4"
+                          isActive={isActive("/account")}
+                        >
+                          Account
+                        </Button>
+
+                        <Button onClick={handleLogout} className="ml-4">
+                          Log out
+                        </Button>
+                      </>
+                    )}
                   </nav>
-                </div>
-              </div>
-              <div className="py-6 px-5">
-                <div className="mt-6">
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                  >
-                    Log out
-                  </a>
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                  >
-                    Sign up
-                  </a>
-                  <p className="mt-6 text-center text-base font-medium text-gray-500">
-                    Existing customer?{" "}
-                    <a
-                      href="#"
-                      className="text-indigo-600 hover:text-indigo-500"
-                    >
-                      Sign in
-                    </a>
-                  </p>
                 </div>
               </div>
             </div>

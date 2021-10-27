@@ -30,7 +30,7 @@ export default function Pagination({ totalPages }) {
           "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
         }
         containerClassName={
-          "hidden sm:flex-1 sm:flex sm:items-center sm:justify-center"
+          "flex w-full justify-around sm:flex-1 sm:flex sm:items-center sm:justify-center"
         }
         previousClassName={
           "relative inline-flex items-center px-4 py-2 border text-sm font-medium"
